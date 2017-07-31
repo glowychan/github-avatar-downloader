@@ -3,21 +3,28 @@ var fs = require('fs');
 var GITHUB_USER = "glowychan";
 var GITHUB_TOKEN = "a0e2139a1431cd3a2604429330c76083e57260e4";
 
+var owner = process.argv[2];
+var repo = process.argv[3];
+
 function getRepoContributors(repoOwner, repoName, cb) {
 
-  var options = {
-  url: 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
-  headers: { 'User-Agent': 'GitHub Avatar Downloader - Student Project' }
-  };
+  if(repoOwner && repoName) {
+    var options = {
+    url: 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
+    headers: { 'User-Agent': 'GitHub Avatar Downloader - Student Project' }
+    };
 
-  request(options, cb);
+    request(options, cb);
+  } else {
+    console.log("Error processing request - please ensure the repo owner and name is entered");
+  }
+
 }
 
 var callback =  function (error, response, body) {
                   console.log('error:', error);
                   console.log('statusCode:', response && response.statusCode);
                   var data = JSON.parse(body);
-                  // data.forEach(person => console.log(person.avatar_url));
                   data.forEach(function(person) {
                     var path = `./avatars/${person.login}.jpg`;
                     var url = `${person.avatar_url}`;
@@ -25,7 +32,7 @@ var callback =  function (error, response, body) {
                   });
                 };
 
-console.log(getRepoContributors("jquery", "jquery", callback));
+// console.log(getRepoContributors("jquery", "jquery", callback));
 
 
 function downloadImageByURL(url, filePath) {
@@ -44,4 +51,6 @@ function downloadImageByURL(url, filePath) {
             console.log('Download complete.');
           });
 }
+
+console.log(getRepoContributors(owner, repo, callback));
 
