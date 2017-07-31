@@ -3,8 +3,15 @@ var GITHUB_USER = "glowychan";
 var GITHUB_TOKEN = "a0e2139a1431cd3a2604429330c76083e57260e4";
 
 function getRepoContributors(repoOwner, repoName, cb) {
-  var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-  request(requestURL, cb);
+
+  var options = {
+  url: 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
+  headers: {
+            'User-Agent': 'request'
+           }
+  };
+
+  request(options, cb);
 }
 
 var callback =  function (error, response, body) {
