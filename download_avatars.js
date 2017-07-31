@@ -2,9 +2,8 @@
 var request = require('request');
 var fs = require('fs');
 
-// Credentials for making API request
-var GITHUB_USER = "glowychan";
-var GITHUB_TOKEN = "a0e2139a1431cd3a2604429330c76083e57260e4";
+// Hidden credentials for making API request
+var db = require('dotenv').config();
 
 // Arguments for command line
 var owner = process.argv[2];
@@ -15,9 +14,8 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
   if (repoOwner && repoName) {
       var options = {
-        url: 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
-        headers: { 'User-Agent': 'GitHub Avatar Downloader - Student Project'
-      }
+        url: 'https://'+ process.env.DB_USER + ':' + process.env.DB_KEY + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
+        headers: { 'User-Agent': 'GitHub Avatar Downloader - Student Project' }
     };
 
     request(options, cb);
